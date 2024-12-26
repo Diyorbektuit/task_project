@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            padding: 30px;
+        }
+
+        .dashboard-title {
+            font-size: 30px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Display 2 cards per row */
+            gap: 20px;
+            justify-items: center;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-body {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .card-description {
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        .card-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .card-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Logout button */
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background-color: #e74c3c;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Logout Button -->
+    <form method="POST" action="{% url 'admin_logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="logout-btn">Log Out</button>
+    </form>
+
+    <div class="dashboard-title">
+        Admin Dashboard
+    </div>
+
+    <div class="card-container">
+        {% for model in models %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ model }}</h5>
+                <p class="card-description">Click to view the list of {{ model }} entries.</p>
+                <a href="{% url 'model_list' model_name=model %}" class="card-btn">View List</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

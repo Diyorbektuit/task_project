@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load custom_filters %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ model_name }} List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Sof oqish fon */
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+
+        .container {
+            margin-top: 40px;
+            max-width: 1200px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Card Style */
+        .add-card {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .add-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .add-card a {
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .add-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Table Design */
+        .table {
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th, .table td {
+            padding: 15px;
+            font-size: 1rem;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .table thead th {
+            background-color: #2980b9;
+            color: #ffffff;
+            font-size: 1rem;
+            text-transform: uppercase;
+        }
+
+        .table tbody tr {
+            transition: background-color 0.3s;
+        }
+
+        .table tbody tr:hover {
+            background-color: #ecf0f1;
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .action-btn.edit {
+            background-color: #27ae60;
+        }
+
+        .action-btn.edit:hover {
+            background-color: #229954;
+        }
+
+        .action-btn.delete {
+            background-color: #e74c3c;
+        }
+
+        .action-btn.delete:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-back {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page Header -->
+        <h1>{{ model_name }} List</h1>
+
+        <!-- Add New Model Card -->
+        <div class="add-card">
+            <a href="{% url 'model_create' model_name=model_name %}">+ Add New {{ model_name }}</a>
+        </div>
+
+        <!-- Model List Table -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    {% for field in fields %}
+                        <th>{{ field|capfirst }}</th>
+                    {% endfor %}
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in objects %}
+                    <tr>
+                        {% for field in fields %}
+                            <td>{{ obj|attr:field }}</td>
+                        {% endfor %}
+                        <td>
+                            <a href="{% url 'model_update' model_name=model_name pk=obj.pk %}" class="action-btn edit">Edit</a>
+                            <a href="{% url 'model_delete' model_name=model_name pk=obj.pk %}" class="action-btn delete" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Back Button -->
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary btn-back">← Back to Dashboard</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
